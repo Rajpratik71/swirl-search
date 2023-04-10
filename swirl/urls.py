@@ -32,6 +32,7 @@ urlpatterns = [
     path('index.html', views.index, name='index'),
     path('error.html', views.error, name='error'),
     path('search.html', views.search, name='search_form'),
+    path('search/search', views.SearchViewSet.as_view({'get': 'list'}), name='search'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('register/', views.registration, name='register'),
     path('register/confirm/<str:token>/<str:signature>/', views.registration_confirmation, name='registration_confirmation'),

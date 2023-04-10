@@ -1,0 +1,28 @@
+{
+    "name": "Wiki (web/Atlassian.com)",
+    "owner": "admin",
+    "shared": "true",
+    "active": "true",
+    "default": "false",
+    "connector": "RequestsGet",
+    "url": "https://testingbw.atlassian.net/wiki/rest/api/content/search?expand=history,space,metadata.labels.results,children.attachment,children.page,children.comment,ancestors",
+    "query_template": "{url}&cql=text~'{query_string}'",
+    "query_processor": "",
+    "query_processors": [
+        "AdaptiveQueryProcessor"
+    ],
+    "query_mappings": "",
+    "result_processor": "",
+    "result_processors": [
+        "MappingResultProcessor"
+    ],
+    "response_mappings": "FOUND=size,RESULTS=results",
+    "result_mappings": "title=title,author=history[*].createdBy[*].publicName,date_published=history[*].createdDate,url='https://testingbw.atlassian.net/wiki{_links[*].webui}',space.name,metadata[*].labels[*].results[*].name,children[*].attachment[*].results[*].title,children[*].comment[*].results[*]._expandable[*].body,children[*].page[*].results[*].title,ancestors[*].title,NO_PAYLOAD",
+    "results_per_query": 10,
+    "credentials": "HTTPBasicAuth('jason@swirl.today','ATATT3xFfGF0j0pBNYp3BEZyCLgenaGmnt2uo7z1jLnFV410W-mfGWczqFxpfp2vRzKIpASscvNHWZa_QalcC4ryVr4Wz4jLWqf65y4UiyeSb9Ey0jDTPKp7ddPQmRWKHqLLa5MpGdDCDhxuK1ii_QvsXlPUvyLpviohXx6-DaQWbQcQutR1AcI=B33E0183')",
+    "tags": [
+        "Confluence",
+        "Atlassian",
+        "Wiki"
+    ]
+}
