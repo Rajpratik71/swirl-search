@@ -150,6 +150,7 @@ class Requests(Connector):
 
             response = None
             # issue the query
+            logger.info(f'DNDEBUG : session value : {session}')
             try:
                 if session and self.provider.credentials:
                     if self.provider.eval_credentials and '{credentials}' in self.provider.credentials:
