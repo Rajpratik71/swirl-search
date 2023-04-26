@@ -75,6 +75,14 @@ def remove_duplicates(my_list):
             seen.add(key)
     return new_list
 
+def return_authenticators_for_login(request):
+    logger.info(f'DNDEBUG: trace return_authenticators_for_login')
+    results = list()
+    for name in SearchProvider.CONNECTORS_AUTHENTICATORS.values():
+        results.append({'name': name})
+    results = remove_duplicates(results)
+    logger.info(f'DNDEBUG: trace authenticators list {results}')
+    return render(request, 'authenticators_oidc.html', {'authenticators': results})
 
 def return_authenticators(request):
     if not request.user.is_authenticated:
@@ -267,14 +275,21 @@ class AuthenticatorViewSet(viewsets.ModelViewSet):
     def list(self, request):
         return return_authenticators_list(request)
 
+def authenticators_oidc(request):
+    logger.info(f'DNDEBUG: trace authenticators_oidc')
+    return return_authenticators_for_login(request)
+
+
 def authenticators(request):
     if request.method == 'POST':
+        logger.info(f'DNDEBUG: trace authenticators POSTG')
         authenticator = request.POST.get('authenticator_name')
         res = SWIRL_AUTHENTICATORS_DICT[authenticator]().update_token(request)
         if res == True:
             return return_authenticators(request)
         return res
     else:
+        logger.info(f'DNDEBUG: trace authenticators non-POST')
         return return_authenticators(request)
 
 ########################################
@@ -287,6 +302,7 @@ def error(request):
 
 class LoginView(APIView):
     def post(self, request):
+        logger.info(f'DNDEBUG: trace LoginView')
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(request, username=username, password=password)

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>OIDC Authenticators:</h2>
+    <table>
+        <tbody>
+            {% for a in authenticators %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="authenticator_name" value="{{ a.name }}"></input>
+                    <tr style="display: flex; flex-direction: row; width: 100%;">
+                        <td>{{ a.name }}</td>
+                        <td style="margin-left: 50px">
+                            <button type="submit" name="{{ a.name }}">
+                                Login
+                            </button>
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br/><br/>
+
+{% endblock %}
