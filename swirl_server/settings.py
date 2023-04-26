@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
+    'mozilla_django_oidc',  # Load after auth
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -70,6 +71,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Add 'mozilla_django_oidc' authentication backend
+AUTHENTICATION_BACKENDS = (
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+)
+
 ROOT_URLCONF = 'swirl_server.urls'
 
 TEMPLATES = [
@@ -93,6 +99,26 @@ WSGI_APPLICATION = 'swirl_server.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'mozilla_django_oidc': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Set the desired log level for mozilla_django_oidc
+        },
+    },
+}
 
 DATABASES = {
     'default': {
@@ -255,3 +281,12 @@ if 'OPENAI_API_KEY' in env:
 MICROSOFT_CLIENT_ID= env('MICROSOFT_CLIENT_ID')
 MICROSOFT_CLIENT_SECRET = env('MICROSOFT_CLIENT_SECRET')
 MICROSOFT_REDIRECT_URI = env('MICROSOFT_REDIRECT_URI')
+
+OIDC_RP_CLIENT_ID=env('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET=env('OIDC_RP_CLIENT_SECRET')
+OIDC_OP_AUTHORIZATION_ENDPOINT=env('OIDC_OP_AUTHORIZATION_ENDPOINT')
+OIDC_OP_TOKEN_ENDPOINT=env('OIDC_OP_TOKEN_ENDPOINT')
+OIDC_OP_USER_ENDPOINT=env('OIDC_OP_USER_ENDPOINT')
+OIDC_RP_SIGN_ALGO=env('OIDC_RP_SIGN_ALGO')
+OIDC_OP_JWKS_ENDPOINT=env('OIDC_OP_JWKS_ENDPOINT')
+LOGIN_REDIRECT_URL=env('LOGIN_REDIRECT_URL')

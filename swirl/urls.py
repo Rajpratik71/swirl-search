@@ -9,6 +9,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 from rest_framework import routers
+
 from . import views
 from swirl.authenticators import Microsoft
 
@@ -57,7 +58,10 @@ urlpatterns = [
     path('register/', views.registration, name='register'),
     path('register/confirm/<str:token>/<str:signature>/', views.registration_confirmation, name='registration_confirmation'),
     path('register/confirm_sent/', views.registration_confirmation_sent, name='registration_confirmation_sent'),
-
+    path('oidc_login/', TemplateView.as_view(template_name='oidc_login.html'), name='oidc_login'),
+    path('oidc_logout/', TemplateView.as_view(template_name='oidc_logout.html'), name='oidc_logout'),
+    path('oidc/', include('mozilla_django_oidc.urls')),
+    path('accounts/profile/', views.profile, name='profile'),
     path('login/', views.LoginView.as_view()),
 
     path('', include(router.urls)),
