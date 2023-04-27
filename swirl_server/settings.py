@@ -73,7 +73,8 @@ MIDDLEWARE = [
 
 # Add 'mozilla_django_oidc' authentication backend
 AUTHENTICATION_BACKENDS = (
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+#    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'swirl.backends.CustomModelOIDCBackend',
 )
 
 ROOT_URLCONF = 'swirl_server.urls'
@@ -290,3 +291,7 @@ OIDC_OP_USER_ENDPOINT=env('OIDC_OP_USER_ENDPOINT')
 OIDC_RP_SIGN_ALGO=env('OIDC_RP_SIGN_ALGO')
 OIDC_OP_JWKS_ENDPOINT=env('OIDC_OP_JWKS_ENDPOINT')
 LOGIN_REDIRECT_URL=env('LOGIN_REDIRECT_URL')
+LOGOUT_REDIRECT_URL=env('LOGOUT_REDIRECT_URL')
+OIDC_USERNAME_ALGO=env('OIDC_USERNAME_ALGO')
+OIDC_STORE_ACCESS_TOKEN=env.bool('OIDC_STORE_ACCESS_TOKEN')
+OIDC_STORE_ID_TOKEN=env.bool('OIDC_STORE_ID_TOKEN')

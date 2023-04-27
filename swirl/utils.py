@@ -19,7 +19,7 @@ def swirl_setdir():
     slash = '\\'
     if '/' in this_file:
         slash = '/'
-    this_path = this_file[:this_file.rfind(slash)] 
+    this_path = this_file[:this_file.rfind(slash)]
     this_folder = this_path[this_path.rfind(slash)+1:]
     append_path = ""
     if this_folder == "swirl":
@@ -43,7 +43,7 @@ def is_int(value):
         return False
     except ValueError:
         return False
-    
+
 def paginate(data, request):
     page = request.GET.get('page')
     items = request.GET.get('items')
@@ -52,3 +52,24 @@ def paginate(data, request):
         page_obj = paginator.get_page(page)
         return page_obj.object_list
     return data
+
+def create_group_if_not_exists(group_name, permissions=None):
+    from django.contrib.auth.models import Group, Permission
+
+    group, created = Group.objects.get_or_create(name=group_name)
+
+    if created:
+        logger.info(f'Group "{group_name}" created.')
+
+        if permissions:
+            for perm_codename in permissions:
+                try:
+                    permission = Permission.objects.get(codename=perm_codename)
+                    group.permissions.add(permission)
+                    logger.info(f'Permission "{perm_codename}" added to group "{group_name}".')
+                except Permission.DoesNotExist:
+                    logger.error(f'Permission "{perm_codename}" not found.')
+    else:
+        logger.info(f'Group "{group_name}" already exists.')
+
+    return group

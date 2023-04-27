@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Logout</h2>
-    <form method="post" action="{% url 'mozilla_django_oidc:oidc_logout' %}">
+    <form method="post" action="{% url 'oidc_logout' %}">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>

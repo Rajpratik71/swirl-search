@@ -267,9 +267,6 @@ class AuthenticatorViewSet(viewsets.ModelViewSet):
     def list(self, request):
         return return_authenticators_list(request)
 
-def oidc_authenticate(request):
-    return render(request, 'oidc_authenticate.html')
-
 def profile(request):
     return render(request, 'profile.html')
 
