@@ -44,7 +44,7 @@ class AdaptiveQueryProcessor(QueryProcessor):
             # end if
             if tag:
                 if val:
-                    if not tag in dict_tags:
+                    if not tag.lower() in dict_tags:
                         dict_tags[tag.lower()] = []
                     dict_tags[tag.lower()].append(val)
                     query_wot_list.append(val)
@@ -70,8 +70,6 @@ class AdaptiveQueryProcessor(QueryProcessor):
             # end if
         else: 
             self.query_string = ' '.join(query_wot_list)
-
-        self.warning(f"self.query_string: {self.query_string}")
 
         query = clean_string(self.query_string).strip()
         query_list = query.split()
