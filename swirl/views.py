@@ -298,6 +298,16 @@ class LoginView(APIView):
             return Response({'token': token.key, 'user': user.username})
         else:
             return Response({'error': 'Invalid credentials'})
+        
+class LogoutView(APIView):
+    
+    @csrf_exempt
+    def post(self, request):
+        print('LOGOUT VIEW')
+        token = Token.objects.get(user=request.user)
+        if token:
+            token.delete()
+        return Response({'status': 'OK'})
 
 class SearchProviderViewSet(viewsets.ModelViewSet):
     """
@@ -415,7 +425,6 @@ class SearchViewSet(viewsets.ModelViewSet):
     Add ?rerun=<query_id> to fully re-execute a query, discarding previous results
     Add ?rescore=<query_id> to re-run post-result processing, updating relevancy scores
     Add ?update=<query_id> to update the Search with new results from all sources
-    Add ?pre_query_processor=<query_processor_name>
     """
     queryset = Search.objects.all()
     serializer_class = SearchSerializer
@@ -428,7 +437,11 @@ class SearchViewSet(viewsets.ModelViewSet):
 
         ########################################
 
-        pre_query_processor_in = request.GET.get('pre_query_processor', '')
+        pre_query_processor_in = request.GET.get('pre_query_processor', None)
+        if pre_query_processor_in:
+            pre_query_processor_single_list = [pre_query_processor_in]
+        else:
+            pre_query_processor_single_list = []
 
         providers = []
         if 'providers' in request.GET.keys():
@@ -488,7 +501,8 @@ class SearchViewSet(viewsets.ModelViewSet):
             logger.info(f"{module_name}: Search.create() from ?qs")
             try:
                 # security review for 1.7 - OK, created with owner
-                new_search = Search.objects.create(query_string=query_string,searchprovider_list=providers,owner=self.request.user,pre_query_processor=pre_query_processor_in)
+                new_search = Search.objects.create(query_string=query_string,searchprovider_list=providers,owner=self.request.user,
+                                                   pre_query_processors=pre_query_processor_single_list)
             except Error as err:
                 self.error(f'Search.create() failed: {err}')
             new_search.status = 'NEW_SEARCH'

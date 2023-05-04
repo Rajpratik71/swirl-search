@@ -26,7 +26,6 @@ router.register(r'sapi/results', views.ResultViewSet, basename='spyglass-results
 router.register(r'sapi/authenticators', views.AuthenticatorViewSet, basename='spyglass-authenticators')
 router.register(r'sapi/searchproviders', views.SearchProviderViewSet, basename='spyglass-searchproviders'),
 
-
 urlpatterns = [
     path('openapi', get_schema_view(
             title="SWIRL Swagger",
@@ -63,6 +62,8 @@ urlpatterns = [
     path('oidc/', include('mozilla_django_oidc.urls')),
     path('accounts/profile/', views.profile, name='profile'),
     path('login/', views.LoginView.as_view()),
+    path('logout/', views.LogoutView.as_view()),
+
 
     path('', include(router.urls)),
 ]
