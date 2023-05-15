@@ -74,7 +74,7 @@
       "auth": {
         "clientId": "<client-id>",
         "authority": "<authority-url>",
-        "redirectUri": "<callback-url>"
+        "redirectUri": "http://localhost:8000/spyglass/microsoft-callback"
       }
     }
   }
