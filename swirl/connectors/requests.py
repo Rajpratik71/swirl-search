@@ -193,6 +193,7 @@ class Requests(Connector):
                             }
                             logger.info(f"{self}: sending request with auth header X-Api-Key")
                             response = self.send_request(page_query, headers=headers, query=self.query_string_to_provider)
+                            logger.info(f"{self}: HBS_DEBUG {response.status_code} {response.reason}")
                             # all others
                         else:
                             # response = requests.get(page_query)
